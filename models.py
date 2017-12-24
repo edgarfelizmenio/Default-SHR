@@ -57,8 +57,8 @@ def get_encounter(encounter_id):
             'value_boolean': observation.value_boolean,
             'value_coded': observation.value_coded,
             'value_coded_name_id': observation.value_coded_name_id,
-            'value_datetime': str(observation.value_datetime),
-            'value_numeric': float(observation.value_numeric)
+            'value_datetime': str(observation.value_datetime) if observation.value_datetime else None,
+            'value_numeric': float(observation.value_numeric) if observation.value_numeric else None
         }
         if observation.value_boolean:
             observationObject['value'] = observation.value_boolean
