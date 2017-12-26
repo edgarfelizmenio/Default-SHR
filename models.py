@@ -9,9 +9,12 @@ Observation = Base.classes.Observation
 def create_encounter(data):
     return None
 
-def get_encounter_ids(patient_id):
-    result = db_session.query(Encounter).filter(
-        Encounter.patient_id == patient_id).all()
+def get_encounter_ids(patient_id = None):
+    if patient_id is not None:
+        result = db_session.query(Encounter).filter(
+            Encounter.patient_id == patient_id).all()
+    else:
+        result = db_session.query(Encounter).all()
     return [e.encounter_id for e in result]
 
 def get_encounter(encounter_id):

@@ -39,3 +39,8 @@ class ClinicalRecord(Resource):
         if encounterObject is None:
             return {'status': 404, 'message': 'Encounter with id={} not found.'.format(encounter_id)}
         return encounterObject, 200
+
+class Encounters(Resource):
+    def get(self):
+        encounters = models.get_encounter_ids()
+        return encounters, 200
