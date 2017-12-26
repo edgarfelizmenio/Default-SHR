@@ -13,20 +13,21 @@ class ClinicalRecords(Resource):
         return encounters, 200
 
     def post(self, patient_id):
-        """
-            Create new encounter for a patient
-        """
-        pass
+        data = request.get_json()
+        encounter_id = models.add_encounter(patient_id, data)
+        if encounter_id is None:
+            return {'status': 400, 'message': 'Insufficient Data'}
+        return encounter_id, 201
 
 
 class AddClinicalRecord(Resource):
 
     def post(self):
-        data = request.form
+        data = request.get_json()
         encounter_id = models.create_encounter(data)
         if encounter_id is None:
             return {'status': 400, 'message': 'Insufficient Data'}
-        return patient_id, 201
+        return encounter_id, 201
 
 class ClinicalRecord(Resource):
 

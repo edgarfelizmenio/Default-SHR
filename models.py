@@ -6,9 +6,6 @@ EncounterRole = Base.classes.EncounterRole
 EncounterType = Base.classes.EncounterType
 Observation = Base.classes.Observation
 
-def create_encounter(data):
-    return None
-
 def get_encounter_ids(patient_id = None):
     if patient_id is not None:
         result = db_session.query(Encounter).filter(
@@ -77,16 +74,21 @@ def get_encounter(encounter_id):
     encounterObject['observations'] = observations
     return encounterObject
 
-def add_encounter(data):
+def add_encounter(patient_id, data):
+    data['patient_id'] = patient_id
+    return create_encounter(data)
+
+def create_encounter(data):
     encounter = Encounter(
-        encounter_type = data['encounter_type'],
+        encounter_type= data['encounter_type'],
         patient_id = data['patient_id'],
         location_id = data['location_id'],
         encounter_datetime = data['encounter_datetime'],
         creator = 0,
-        date_created = None
+        date_created = data['encounter_datetime']
     )
     db_session.add(encounter)
+    # db_session.flush()
     # iterate over encounter providers
     for provider in data.get('providers', []):
         encounter_provider = EncounterProvider(
@@ -94,7 +96,7 @@ def add_encounter(data):
             provider_id = provider['provider_id'],
             encounter_role_id = provider['encounter_role_id'],
             creator = 0,
-            date_created = None
+            date_created = data['encounter_datetime']
         )
         db_session.add(encounter_provider)
     for obs in data.get('observations', []):
@@ -103,10 +105,10 @@ def add_encounter(data):
             concept_id = obs['concept_id'],
             encounter = encounter,
             obs_datetime = obs['obs_datetime'],
-            location_id = location_id,
+            location_id = obs['location_id'],
             comments = obs['comments'],
             creator = 0,
-            date_created = None
+            date_created = obs['obs_datetime']
         )
         if 'value_boolean' in obs:
             observation.value_boolean = obs['value_boolean']
@@ -119,7 +121,7 @@ def add_encounter(data):
         if 'value_numeric' in obs:
             observation.value_numeric = obs['value_numeric']
         db_session.add(observation)
-    return encounter.encounter_id
-
     # iterate over observations
     db_session.commit()
+    return encounter.encounter_id
+
