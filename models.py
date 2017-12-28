@@ -39,10 +39,11 @@ def get_encounter(encounter_id):
         providers.append({
             'provider_id': encounter_provider.provider_id,
             'role': encounter_role.name,
+            'encounter_role_id': encounter_role.encounter_role_id,
             'role_description': encounter_role.description
         })
     encounterObject['providers'] = providers
-
+    
     # mamaya na yung observations
     observations = []
     observation_result = db_session.query(Observation).filter(
