@@ -26,6 +26,7 @@ def get_encounter(encounter_id):
         'patient_id': encounter.patient_id,
         'location_id': encounter.location_id,
         'encounter_datetime': str(encounter.encounter_datetime),
+        'encounter_type': encounter_type.encounter_type_id,
         'encounter_type_name': encounter_type.name,
         'encounter_type_description': encounter_type.description
     }
