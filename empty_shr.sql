@@ -169,6 +169,33 @@ INSERT INTO `EncounterType` VALUES (1,'ADULTINITIAL','Outpatient Adult Initial V
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
+--
+-- Table structure for table `EncounterImage`
+--
+
+DROP TABLE IF EXISTS `EncounterImage`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `EncounterImage` (
+  `encounter_image_id` int(11) NOT NULL AUTO_INCREMENT,
+  `encounter_id` int(11) NOT NULL,
+  `value` longtext NOT NULL,
+  PRIMARY KEY (`encounter_image_id`),
+  KEY `encounter_image` (`encounter_id`),
+  CONSTRAINT `encounter_image` FOREIGN KEY (`encounter_id`) REFERENCES `Encounter` (`encounter_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `EncounterImage`
+--
+
+LOCK TABLES `EncounterImage` WRITE;
+/*!40000 ALTER TABLE `EncounterImage` DISABLE KEYS */;
+/*!40000 ALTER TABLE `EncounterImage` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
@@ -177,4 +204,6 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-26 17:30:30
+-- Dump completed on 2018-01-05 22:44:12
+
+
