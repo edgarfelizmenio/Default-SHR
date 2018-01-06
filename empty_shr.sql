@@ -33,7 +33,7 @@ CREATE TABLE `Encounter` (
   PRIMARY KEY (`encounter_id`),
   KEY `encounter_type_id` (`encounter_type`),
   CONSTRAINT `encounter_type_id` FOREIGN KEY (`encounter_type`) REFERENCES `EncounterType` (`encounter_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48845 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,7 +61,7 @@ CREATE TABLE `Observation` (
   PRIMARY KEY (`obs_id`),
   KEY `encounter_observations` (`encounter_id`),
   CONSTRAINT `encounter_observations` FOREIGN KEY (`encounter_id`) REFERENCES `Encounter` (`encounter_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=476974 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -83,7 +83,7 @@ CREATE TABLE `EncounterProvider` (
   KEY `encounter_role_id_fk` (`encounter_role_id`),
   CONSTRAINT `encounter_id_fk` FOREIGN KEY (`encounter_id`) REFERENCES `Encounter` (`encounter_id`),
   CONSTRAINT `encounter_role_id_fk` FOREIGN KEY (`encounter_role_id`) REFERENCES `EncounterRole` (`encounter_role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14317 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
