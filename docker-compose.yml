@@ -14,6 +14,8 @@ services:
     image: mysql:5.6
     restart: always
     volumes:
+      # Uncomment to get seed data
+      # - ./raw_shr.sql:/docker-entrypoint-initdb.d/raw_shr.sql
       - ./empty_shr.sql:/docker-entrypoint-initdb.d/raw_shr.sql
       # - db-data:/var/lib/mysql
     environment:
