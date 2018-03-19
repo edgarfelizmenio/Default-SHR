@@ -1,0 +1,53 @@
+version: '3'
+
+# volumes:
+#   db-data:
+#     driver: local
+#     driver_opts:
+#       type: "nfs"
+#       o: "addr=127.0.0.1,nolock,soft,rw"
+#       device: ":/CS300-Data"
+
+services:
+
+  database:
+    image: mysql:5.6
+    restart: always
+    volumes:
+      - ./empty_shr.sql:/docker-entrypoint-initdb.d/raw_shr.sql
+      # - db-data:/var/lib/mysql
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: raw_shr
+      MYSQL_TCP_PORT: 3307
+    expose:
+      - 3307
+    network_mode: "host"
+
+  default-shr:
+    restart: always
+    build: .
+    image: default-shr
+    command: ["gunicorn", "-b", "127.0.0.1:8000", "--worker-class", "gthread", "-w", "1", "--threads", "1", "app:app"]
+    depends_on:
+      - database
+    # links:
+    #   - database
+    expose: 
+      - 8000
+      - 443
+    network_mode: "host"
+
+  server:
+    restart: always
+    image: nginx
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - default-shr
+    # links:
+    #   - default-shr:default-shr
+    ports:
+      - "80:80"
+    network_mode: "host"

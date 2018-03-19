@@ -1,4 +1,5 @@
 from database import Base, db_session
+import config
 
 Encounter = Base.classes.Encounter
 EncounterProvider = Base.classes.EncounterProvider
