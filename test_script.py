@@ -26,8 +26,7 @@ encounter1 = {
         'value_datetime': str(datetime.datetime.now()),
         'comments': 'ganun talaga eh' 
     }],
-    'encounter_datetime': str(datetime.datetime.now()),
-    'image': 'lolililili'
+    'encounter_datetime': str(datetime.datetime.now())
 }
 
 encounter2 = {
@@ -52,8 +51,7 @@ encounter2 = {
         'value_coded_name_id': 6969,
         'comments': "may comment"
     }],
-    'encounter_datetime': str(datetime.datetime.now()),
-    'image': 'sadfasdfasdfasdfasdfassfasdfasdf'
+    'encounter_datetime': str(datetime.datetime.now())
 }
 
 headers = {'Content-Type': 'application/json'}

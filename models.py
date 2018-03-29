@@ -5,7 +5,6 @@ Encounter = Base.classes.Encounter
 EncounterProvider = Base.classes.EncounterProvider
 EncounterRole = Base.classes.EncounterRole
 EncounterType = Base.classes.EncounterType
-EncounterImage = Base.classes.EncounterImage
 Observation = Base.classes.Observation
 
 def get_encounter_ids(patient_id = None):
@@ -76,12 +75,6 @@ def get_encounter(encounter_id):
         observations.append(observationObject)
     encounterObject['observations'] = observations
 
-    encounter_image_result = db_session.query(EncounterImage).filter(
-        EncounterImage.encounter_id == encounterObject['encounter_id']
-    ).first()
-    if encounter_image_result is not None:
-        encounterObject['image'] = encounter_image_result.value
-
     return encounterObject
 
 def add_encounter(patient_id, data):
@@ -131,12 +124,6 @@ def create_encounter(data):
         if 'value_numeric' in obs:
             observation.value_numeric = obs['value_numeric']
         db_session.add(observation)
-    if 'image' in data:
-        image = EncounterImage(
-            encounter = encounter,
-            value = data['image']
-        )
-        db_session.add(image)
 
     # iterate over observations
     db_session.commit()
