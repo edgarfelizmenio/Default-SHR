@@ -15,6 +15,12 @@ def get_encounter_ids(patient_id = None):
         result = db_session.query(Encounter).all()
     return [e.encounter_id for e in result]
 
+def delete_all():
+    db_session.query(Observation).delete()
+    db_session.query(EncounterProvider).delete()
+    db_session.query(Encounter).delete()
+    db_session.commit()
+
 def get_all_encounters():
     all_encounters = db_session.query(Encounter, EncounterType).join(
         EncounterType
