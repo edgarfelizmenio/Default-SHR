@@ -17,6 +17,7 @@ api.add_resource(resources.ClinicalRecords, '/encounters/patient/<int:patient_id
 api.add_resource(resources.ClinicalRecord, '/encounters/<int:encounter_id>')
 api.add_resource(resources.Encounters, '/encounters')
 api.add_resource(resources.AddClinicalRecord, '/encounters')
+api.add_resource(resources.AllEncounters, '/all')
 
 if __name__ == '__main__':
     app.run(port=4000)

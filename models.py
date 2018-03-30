@@ -15,6 +15,68 @@ def get_encounter_ids(patient_id = None):
         result = db_session.query(Encounter).all()
     return [e.encounter_id for e in result]
 
+def get_all_encounters():
+    all_encounters = db_session.query(Encounter, EncounterType).join(
+        EncounterType
+    )
+    encounter_objects = []
+    for encounter, encounter_type in all_encounters:
+        encounterObject = {
+            'encounter_id': encounter.encounter_id,
+            'patient_id': encounter.patient_id,
+            'location_id': encounter.location_id,
+            'encounter_datetime': str(encounter.encounter_datetime),
+            'encounter_type': encounter_type.encounter_type_id,
+            'encounter_type_name': encounter_type.name,
+            'encounter_type_description': encounter_type.description
+        }
+
+        providers = []
+        provider_result = db_session.query(EncounterProvider, EncounterRole).join(
+            EncounterRole).filter(
+                EncounterProvider.encounter_id == encounterObject['encounter_id']).all()
+        for encounter_provider, encounter_role in provider_result:
+            providers.append({
+                'provider_id': encounter_provider.provider_id,
+                'role': encounter_role.name,
+                'encounter_role_id': encounter_role.encounter_role_id,
+                'role_description': encounter_role.description
+            })
+        encounterObject['providers'] = providers
+        
+        observations = []
+        observation_result = db_session.query(Observation).filter(
+            Observation.encounter_id == encounterObject['encounter_id']).all()
+        for observation in observation_result:
+            observationObject = {
+                'obs_id': observation.obs_id,
+                'person_id': observation.person_id,
+                'concept_id': observation.concept_id,
+                'obs_datetime': str(observation.obs_datetime),
+                'location_id': observation.location_id,
+                'comments': observation.comments,
+                'value_boolean': observation.value_boolean,
+                'value_coded': observation.value_coded,
+                'value_coded_name_id': observation.value_coded_name_id,
+                'value_datetime': str(observation.value_datetime) if observation.value_datetime else None,
+                'value_numeric': float(observation.value_numeric) if observation.value_numeric else None
+            }
+            if observation.value_boolean:
+                observationObject['value'] = observation.value_boolean
+            if observation.value_coded:
+                observationObject['value'] = observation.value_coded
+            if observation.value_coded_name_id:
+                observationObject['value'] = observation.value_coded_name_id
+            if observation.value_datetime:
+                observationObject['value'] = str(observation.value_datetime)
+            if observation.value_numeric:
+                observationObject['value'] = float(observation.value_numeric)
+            observations.append(observationObject)
+        encounterObject['observations'] = observations
+        encounter_objects.append(encounterObject)
+    print(len(encounter_objects),'lol_nigga')
+    return encounter_objects
+
 def get_encounter(encounter_id):
     result = db_session.query(Encounter, EncounterType).join(
         EncounterType

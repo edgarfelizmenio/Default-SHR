@@ -3,6 +3,16 @@ from flask_restful import Resource
 
 import models
 
+class AllEncounters(Resource):
+
+    def get(self):
+        """
+            Convenience method for generating test data
+        """
+        print('lol nigga')
+        all_encounters = models.get_all_encounters()
+        return all_encounters, 200
+
 class ClinicalRecords(Resource):
 
     def get(self, patient_id):
@@ -18,7 +28,6 @@ class ClinicalRecords(Resource):
         if encounter_id is None:
             return {'status': 400, 'message': 'Insufficient Data'}
         return encounter_id, 201
-
 
 class AddClinicalRecord(Resource):
 
