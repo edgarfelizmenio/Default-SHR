@@ -1,7 +1,7 @@
 import mysql.connector
 
 querystring = """
-	SELECT (encounter.size + obs.size) as transaction_size FROM
+	SELECT (encounter.size + obs.size + encounter_provider.size) as transaction_size FROM
 	(SELECT encounter_id, (
 	LENGTH(encounter_id) +
 	LENGTH(encounter_type) +
@@ -27,8 +27,19 @@ querystring = """
 		LENGTH(creator) +
 		LENGTH(date_created)
 		) AS size FROM Observation
-		GROUP BY encounter_id) as obs ON encounter.encounter_id = obs.encounter_id;
+		GROUP BY encounter_id) as obs ON encounter.encounter_id = obs.encounter_id JOIN
+	(SELECT encounter_id, SUM(
+		LENGTH(encounter_provider_id) +
+		LENGTH(encounter_id) + 
+		LENGTH(provider_id) +
+		LENGTH(encounter_role_id) +
+		LENGTH(creator) +
+		LENGTH(date_created)				
+		) AS size FROM EncounterProvider
+		GROUP BY encounter_id) as encounter_provider ON encounter.encounter_id = encounter_provider.encounter_id;
 """
+
+
 
 try:
 	connection = mysql.connector.connect(host='localhost',
